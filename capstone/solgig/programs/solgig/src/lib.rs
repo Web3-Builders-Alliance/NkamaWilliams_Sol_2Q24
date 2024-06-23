@@ -22,4 +22,19 @@ pub mod solgig {
         ctx.accounts.deposit(amount)?;
         Ok(())
     }
+
+    pub fn assign(ctx: Context<Assign>, seed: u64) -> Result<()> {
+        ctx.accounts.assign()?;
+        Ok(())
+    }
+
+    pub fn completed(ctx: Context<Completed>, seed: u64) -> Result<()> {
+        ctx.accounts.completed()?;
+        Ok(())
+    }
+
+    pub fn withdraw(ctx: Context<Withdraw>, seed: u64) -> Result<()> {
+        ctx.accounts.withdraw()?;
+        Ok(())
+    }
 }

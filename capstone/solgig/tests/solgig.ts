@@ -106,4 +106,57 @@ describe("solgig", () => {
     console.log(await program.account.job.fetch(jobState));
     console.log(await connection.getBalance(vault));
   });
+
+  it("Assign Developer", async () => {
+    let tx = await program.methods
+      .assign(new BN(seed))
+      .accounts({
+        maker: maker.publicKey,
+        developer: developer.publicKey,
+        jobState,
+        systemProgram,
+      })
+      .signers([maker])
+      .rpc();
+
+    console.log(`Your transaction signature: ${tx}`);
+    console.log(await program.account.job.fetch(jobState));
+    console.log(`Developer: ${developer.publicKey}`);
+  });
+
+  it("Task Completed", async () => {
+    let tx = await program.methods
+      .completed(new BN(seed))
+      .accounts({
+        maker: maker.publicKey,
+        jobState,
+        systemProgram,
+      })
+      .signers([maker])
+      .rpc();
+
+    console.log(`Your transaction signature: ${tx}`);
+    console.log(await program.account.job.fetch(jobState));
+  });
+
+  it("Developer Withdraw", async () => {
+    let tx = await program.methods
+      .withdraw(new BN(seed))
+      .accounts({
+        maker: maker.publicKey,
+        jobState,
+        systemProgram,
+        developer: developer.publicKey,
+        vault,
+      })
+      .signers([developer])
+      .rpc();
+
+    console.log(`Your transaction signature: ${tx}`);
+    console.log(await program.account.job.fetch(jobState));
+    console.log(`Vault balance: ${await connection.getBalance(vault)}`);
+    console.log(
+      `Developer balance: ${await connection.getBalance(developer.publicKey)}`
+    );
+  });
 });

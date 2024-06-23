@@ -6,6 +6,7 @@ use ::anchor_spl::{
 
 use crate::state::Escrow;
 #[derive(Accounts)]
+#[instruction(seed:u64)]
 pub struct Take<'info> {
     #[account(mut)]
     pub taker: Signer<'info>,
@@ -19,6 +20,7 @@ pub struct Take<'info> {
         mut,
         has_one = mint_a,
         has_one = mint_b,
+        has_one = maker,
         seeds = [b"escrow", escrow.maker.key().as_ref(), escrow.seed.to_le_bytes().as_ref()],
         bump = escrow.bump,
         close = maker,

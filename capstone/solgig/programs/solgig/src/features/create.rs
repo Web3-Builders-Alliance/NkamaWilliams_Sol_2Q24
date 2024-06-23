@@ -1,0 +1,35 @@
+use crate::state::Job;
+use anchor_lang::prelude::*;
+
+#[derive(Accounts)]
+#[instruction(seed:u64)]
+pub struct Create<'info> {
+    #[account(mut)]
+    pub maker: Signer<'info>,
+    #[account(
+        init,
+        payer = maker,
+        seeds = [b"job", maker.key().as_ref(), seed.to_le_bytes().as_ref()],
+        space = Job::INIT_SPACE,
+        bump,
+    )]
+    pub job_state: Account<'info, Job>,
+    #[account(
+        seeds = [b"vault", job_state.key().as_ref()],
+        bump,
+    )]
+    pub vault: SystemAccount<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+impl<'info> Create<'info> {
+    pub fn initialize(&mut self, seed: u64, state_bump: u8, vault_bump: u8) -> Result<()> {
+        self.job_state.maker = self.maker.key();
+        self.job_state.seed = seed;
+        self.job_state.state_bump = state_bump;
+        self.job_state.vault_bump = vault_bump;
+        self.job_state.task_assigned = false;
+        self.job_state.task_complete = false;
+        Ok(())
+    }
+}

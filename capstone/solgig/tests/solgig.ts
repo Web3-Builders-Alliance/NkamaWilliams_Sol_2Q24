@@ -76,7 +76,7 @@ describe("solgig", () => {
 
   it("Initialize", async () => {
     let tx = await program.methods
-      .initialize(new BN(seed))
+      .initialize(new BN(seed), 3)
       .accounts({
         vault,
         maker: maker.publicKey,

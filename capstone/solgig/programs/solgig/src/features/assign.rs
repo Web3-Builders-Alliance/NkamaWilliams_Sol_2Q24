@@ -1,4 +1,4 @@
-use crate::state::Job;
+use crate::{errors::Errors, state::Job};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -10,6 +10,7 @@ pub struct Assign<'info> {
     pub developer: SystemAccount<'info>,
     #[account(
         mut,
+        constraint = job_state.maker == maker.key() @ Errors::NotCreator,
         seeds = [b"job", maker.key().as_ref(), seed.to_le_bytes().as_ref()],
         bump = job_state.state_bump,
     )]

@@ -124,7 +124,22 @@ describe("solgig", () => {
     console.log(`Developer: ${developer.publicKey}`);
   });
 
-  it("Task Completed", async () => {
+  it("Task 1 Completed", async () => {
+    let tx = await program.methods
+      .completed(new BN(seed))
+      .accounts({
+        maker: maker.publicKey,
+        jobState,
+        systemProgram,
+      })
+      .signers([maker])
+      .rpc();
+
+    console.log(`Your transaction signature: ${tx}`);
+    console.log(await program.account.job.fetch(jobState));
+  });
+
+  it("Task 2 Completed", async () => {
     let tx = await program.methods
       .completed(new BN(seed))
       .accounts({
@@ -157,6 +172,18 @@ describe("solgig", () => {
     console.log(`Vault balance: ${await connection.getBalance(vault)}`);
     console.log(
       `Developer balance: ${await connection.getBalance(developer.publicKey)}`
+    );
+  });
+
+  it("Job Cancelled", async () => {
+    const tx = await program.methods
+      .cancel(new BN(seed))
+      .accounts({ maker: maker.publicKey, jobState, vault, systemProgram })
+      .signers([maker])
+      .rpc();
+    console.log(`Your transaction signature: ${tx}`);
+    console.log(
+      `Maker balance: ${await connection.getBalance(maker.publicKey)}`
     );
   });
 });

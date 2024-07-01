@@ -30,8 +30,18 @@ pub mod solgig {
         Ok(())
     }
 
-    pub fn completed(ctx: Context<Completed>, seed: u64) -> Result<()> {
-        ctx.accounts.completed()?;
+    pub fn submit(ctx: Context<Submit>, seed: u64) -> Result<()> {
+        ctx.accounts.submit_milestone()?;
+        Ok(())
+    }
+
+    pub fn accept_submission(ctx: Context<Handler>, seed: u64) -> Result<()> {
+        ctx.accounts.accept_submission()?;
+        Ok(())
+    }
+
+    pub fn reject_submission(ctx: Context<Handler>, seed: u64) -> Result<()> {
+        ctx.accounts.reject_submission()?;
         Ok(())
     }
 

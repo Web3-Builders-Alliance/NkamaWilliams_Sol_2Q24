@@ -4,7 +4,7 @@ use anchor_lang::prelude::*;
 #[derive(Accounts)]
 #[instruction(seed: u64)]
 
-pub struct Completed<'info> {
+pub struct Handler<'info> {
     pub maker: Signer<'info>,
     #[account(
         mut,
@@ -16,13 +16,17 @@ pub struct Completed<'info> {
     pub system_program: Program<'info, System>,
 }
 
-impl<'info> Completed<'info> {
-    pub fn completed(&mut self) -> Result<()> {
-        require!(
-            self.job_state.milestone_completed < self.job_state.milestones,
-            Errors::MilestonesCompleted
-        );
+impl<'info> Handler<'info> {
+    pub fn accept_submission(&mut self) -> Result<()> {
+        require!(self.job_state.pending_submission, Errors::NoSubmission);
+        self.job_state.pending_submission = false;
         self.job_state.milestone_completed += 1;
+        Ok(())
+    }
+
+    pub fn reject_submission(&mut self) -> Result<()> {
+        require!(self.job_state.pending_submission, Errors::NoSubmission);
+        self.job_state.pending_submission = false;
         Ok(())
     }
 }

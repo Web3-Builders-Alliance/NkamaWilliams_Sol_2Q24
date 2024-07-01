@@ -20,6 +20,12 @@ pub enum Errors {
     NotEnoughMilestones,
     #[msg("Not the creator!")]
     NotCreator,
+    #[msg("Not the approved developer!")]
+    NotDeveloper,
     #[msg("Developer still has unwithdrawn funds!")]
     DeveloperFundsUnwithdrawn,
+    #[msg("No pending submission to approve")]
+    NoSubmission,
+    #[msg("There is a pending submission to approve")]
+    PendingSubmission,
 }

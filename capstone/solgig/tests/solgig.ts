@@ -124,9 +124,25 @@ describe("solgig", () => {
     console.log(`Developer: ${developer.publicKey}`);
   });
 
-  it("Task 1 Completed", async () => {
+  it("Task 1 Submitted", async () => {
     let tx = await program.methods
-      .completed(new BN(seed))
+      .submit(new BN(seed))
+      .accounts({
+        developer: developer.publicKey,
+        maker: maker.publicKey,
+        jobState,
+        systemProgram,
+      })
+      .signers([developer])
+      .rpc();
+
+    console.log(`Your transaction signature: ${tx}`);
+    console.log(await program.account.job.fetch(jobState));
+  });
+
+  it("Task 1 Accepted", async () => {
+    let tx = await program.methods
+      .acceptSubmission(new BN(seed))
       .accounts({
         maker: maker.publicKey,
         jobState,
@@ -139,9 +155,25 @@ describe("solgig", () => {
     console.log(await program.account.job.fetch(jobState));
   });
 
-  it("Task 2 Completed", async () => {
+  it("Task 2 Submitted", async () => {
     let tx = await program.methods
-      .completed(new BN(seed))
+      .submit(new BN(seed))
+      .accounts({
+        developer: developer.publicKey,
+        maker: maker.publicKey,
+        jobState,
+        systemProgram,
+      })
+      .signers([developer])
+      .rpc();
+
+    console.log(`Your transaction signature: ${tx}`);
+    console.log(await program.account.job.fetch(jobState));
+  });
+
+  it("Task 2 Rejected", async () => {
+    let tx = await program.methods
+      .rejectSubmission(new BN(seed))
       .accounts({
         maker: maker.publicKey,
         jobState,

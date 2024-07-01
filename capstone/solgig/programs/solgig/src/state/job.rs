@@ -12,9 +12,10 @@ pub struct Job {
     pub vault_bump: u8,
     pub milestones: u8,
     pub milestone_completed: u8,
+    pub pending_submission: bool,
     pub task_assigned: bool,
 }
 
 impl Space for Job {
-    const INIT_SPACE: usize = 8 + (PUBKEY * 2) + (U64 * 2) + (U8 * 4) + BOOL;
+    const INIT_SPACE: usize = 8 + (PUBKEY * 2) + (U64 * 2) + (U8 * 4) + (BOOL * 2);
 }

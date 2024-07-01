@@ -39,6 +39,7 @@ impl<'info> Create<'info> {
         self.job_state.vault_bump = vault_bump;
         self.job_state.milestones = milestones;
         self.job_state.milestone_completed = 0;
+        self.job_state.pending_submission = false;
         self.job_state.task_assigned = false;
         Ok(())
     }

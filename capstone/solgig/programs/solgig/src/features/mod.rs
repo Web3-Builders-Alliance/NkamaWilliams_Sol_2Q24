@@ -7,11 +7,14 @@ pub use deposit::*;
 pub mod assign;
 pub use assign::*;
 
-pub mod completed;
-pub use completed::*;
+pub mod handle_submissions;
+pub use handle_submissions::*;
 
 pub mod withdraw;
 pub use withdraw::*;
 
 pub mod cancel;
 pub use cancel::*;
+
+pub mod submit;
+pub use submit::*;

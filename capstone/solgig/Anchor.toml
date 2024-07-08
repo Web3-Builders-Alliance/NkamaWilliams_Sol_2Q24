@@ -4,14 +4,14 @@
 seeds = false
 skip-lint = false
 
-[programs.localnet]
-solgig = "9WFWMjBDF32pGEEjP6XHaGUkuQXqcgx1eFjRqLSh2dbA"
+[programs.devnet]
+solgig = "A4wtrzSWg1PTHiM1NPveZSmP7vDX3gUgHstwcdGd2w8F"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "devnet"
 wallet = "/home/izomana/.config/solana/id.json"
 
 [scripts]

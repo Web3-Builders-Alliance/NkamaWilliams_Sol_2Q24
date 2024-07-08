@@ -7,7 +7,7 @@ mod state;
 
 use features::*;
 
-declare_id!("9WFWMjBDF32pGEEjP6XHaGUkuQXqcgx1eFjRqLSh2dbA");
+declare_id!("A4wtrzSWg1PTHiM1NPveZSmP7vDX3gUgHstwcdGd2w8F");
 
 #[program]
 pub mod solgig {
@@ -55,3 +55,5 @@ pub mod solgig {
         Ok(())
     }
 }
+
+// 9WFWMjBDF32pGEEjP6XHaGUkuQXqcgx1eFjRqLSh2dbA

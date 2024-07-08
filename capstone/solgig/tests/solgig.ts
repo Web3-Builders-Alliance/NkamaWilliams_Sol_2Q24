@@ -9,6 +9,7 @@ import {
 } from "@solana/web3.js";
 import { Solgig } from "../target/types/solgig";
 import { BN } from "bn.js";
+import { assert } from "chai";
 
 describe("solgig", () => {
   // Configure the client to use the local cluster.
@@ -74,6 +75,22 @@ describe("solgig", () => {
     console.log(await provider.connection.getBalance(developer.publicKey));
   });
 
+  it("Should Fail - Initialize", async () => {
+    try {
+      await program.methods
+        .initialize(new BN(seed), 0)
+        .accounts({ maker: maker.publicKey, vault, jobState, systemProgram })
+        .signers([maker])
+        .rpc();
+
+      assert.fail(
+        "The transaction should have failed due to invalid milestones"
+      );
+    } catch (err) {
+      assert.equal(err.error.errorCode.code, "NotEnoughMilestones");
+    }
+  });
+
   it("Initialize", async () => {
     let tx = await program.methods
       .initialize(new BN(seed), 3)
@@ -88,6 +105,36 @@ describe("solgig", () => {
 
     console.log(`Your transaction signature: ${tx}`);
     console.log(await program.account.job.fetch(jobState));
+  });
+
+  it("Should Fail - Deposit (Insufficient Funds)", async () => {
+    try {
+      await program.methods
+        .deposit(new BN(seed), new BN(21 * LAMPORTS_PER_SOL))
+        .accounts({ maker: maker.publicKey, vault, jobState, systemProgram })
+        .signers([maker])
+        .rpc();
+
+      assert.fail(
+        "The transaction should have failed due to insufficient funds"
+      );
+    } catch (err) {
+      assert.equal(err.error.errorCode.code, "InsufficientFunds");
+    }
+  });
+
+  it("Should Fail - Deposit (Invalid Deposit)", async () => {
+    try {
+      await program.methods
+        .deposit(new BN(seed), new BN(0))
+        .accounts({ maker: maker.publicKey, vault, jobState, systemProgram })
+        .signers([maker])
+        .rpc();
+
+      assert.fail("The transaction should have failed due to invalid deposit");
+    } catch (err) {
+      assert.equal(err.error.errorCode.code, "InvalidDeposit");
+    }
   });
 
   it("Deposit 3 SOL in Vault", async () => {
